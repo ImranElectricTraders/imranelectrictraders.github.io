@@ -5,17 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imran Electric Traders</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
     <style>
         :root {
             /* Theme: Black, Yellow, White */
-            --bg-color: #000000;
+            --bg-color: #050505;
+            /* Slightly lighter/richer black */
             --primary-yellow: #FFD700;
-            /* Gold/Yellow */
             --text-white: #ffffff;
-            --text-black: #000000;
-            --card-bg: #111111;
+            --text-gray: #b0b0b0;
+            --card-bg: rgba(20, 20, 20, 0.95);
+            --glass-bg: rgba(30, 30, 30, 0.6);
             --border-color: #333333;
-            --transition: all 0.3s ease;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -25,12 +31,24 @@
         }
 
         body {
-            /* Using System Fonts for Performance */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Outfit', sans-serif;
+            /* Premium Font */
             background-color: var(--bg-color);
             color: var(--text-white);
             line-height: 1.6;
             overflow-x: hidden;
+            font-weight: 400;
+            cursor: none;
+            /* Hide default cursor */
+        }
+
+        /* Ensure links/buttons also don't show cursor */
+        a,
+        button,
+        input,
+        textarea,
+        select {
+            cursor: none;
         }
 
         a {
@@ -42,7 +60,7 @@
             list-style: none;
         }
 
-        /* --- Hero Section (New Design) --- */
+        /* --- Hero Section (Premium Design) --- */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -50,24 +68,41 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 40px 20px;
-            background: radial-gradient(circle at center, #222 0%, #000 70%);
+            padding: 80px 20px;
+            /* Subtle Texture/Gradient for Depth */
+            background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
             position: relative;
+        }
+
+        /* Subtle Grid Pattern Overlay (Global) */
+        body::before {
+            content: "";
+            position: fixed;
+            /* Fixed to cover whole site */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            /* Behind everything */
+            opacity: 0.5;
         }
 
         /* Logo Animation */
         .logo-container {
-            width: 180px;
-            height: 180px;
-            width: 180px;
-            height: 180px;
-            border-radius: 15px;
-            /* Rounded square instead of circle */
-            border: 2px solid var(--primary-yellow);
+            width: 250px;
+            height: 250px;
+            /* border-radius: 15px; REMOVED */
+            /* border: 2px solid var(--primary-yellow); REMOVED */
             padding: 2px;
             margin-bottom: 20px;
-            animation: pulseGlow 2s infinite alternate;
-            background: #fff;
+            /* animation: pulseGlow 2s infinite alternate; REMOVED */
+            background: transparent;
+            /* Changed from #fff */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -77,8 +112,6 @@
         .logo-container img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            /* Ensures full logo is visible */
             object-fit: contain;
             /* Ensures full logo is visible */
             border-radius: 15px;
@@ -260,15 +293,19 @@
         }
 
         .contact-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            /* Ultra subtle border */
             transition: var(--transition);
         }
 
         .contact-card:hover {
             border-color: var(--primary-yellow);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
         }
 
         .contact-icon {
@@ -326,7 +363,31 @@
             transform: rotate(360deg);
         }
 
-        .social-btn svg {
+        /* Updated Social Buttons */
+        .social-btn-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            /* Glassy dark */
+            color: #ccc;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            margin: 0 10px;
+        }
+
+        .social-btn-link:hover {
+            background: var(--primary-yellow);
+            color: #000;
+            border-color: var(--primary-yellow);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .social-btn-link svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
@@ -335,11 +396,18 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 30px;
-            background: #111;
-            border-top: 3px solid var(--primary-yellow);
-            margin-top: 50px;
-            color: #888;
+            padding: 40px 20px;
+            background: #000;
+            border-top: 1px solid #222;
+            margin-top: 80px;
+            color: #666;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        footer strong {
+            color: var(--primary-yellow);
+            font-weight: 600;
         }
 
 
@@ -370,7 +438,7 @@
     <!-- Hero Section -->
     <div class="hero">
         <div class="logo-container">
-            <img src="image/logo.jpg" alt="Imran Electric Traders">
+            <img src="image/logo.png" alt="Imran Electric Traders">
         </div>
 
         <p class="welcome-text">Welcome to</p>
@@ -386,45 +454,132 @@
         </div>
 
         <!-- Items Paragraph Below -->
-        <p class="deals-paragraph">
-            Fiber Sheets, China Fittings, PVC Items, Breakers, Home Wiring, Fancy Lights And All Kind of Electric Items
-        </p>
+        <!-- Items Grid -->
+        <div class="deals-grid">
+            <span class="deal-box">Fiber Sheets</span>
+            <span class="deal-box">China Fittings</span>
+
+            <span class="deal-box">Breakers</span>
+            <span class="deal-box">Home Wiring</span>
+            <span class="deal-box">Fancy Lights</span>
+            <span class="deal-box highlight">All Kind of Electric Items</span>
+        </div>
 
     </div>
 
     <style>
         /* Updated Styles for this section */
         .deals-title-box {
-            background-color: var(--primary-yellow);
-            color: var(--text-black);
-            padding: 15px 40px;
-            border-radius: 50px;
-            /* Pillow shape */
-            display: inline-block;
+            background-color: transparent;
+            /* Removed strip */
+            color: var(--primary-yellow);
+            padding: 10px 0;
+            width: 100%;
+            display: block;
             margin-bottom: 20px;
-            font-weight: 800;
+            font-weight: 900;
             text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            animation: floatInfinity 4s ease-in-out infinite;
-            border: 3px solid #fff;
+            letter-spacing: 3px;
+            box-shadow: none;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            /* Subtle divider instead of box */
         }
+
+        /* Catalog Button */
+        .catalog-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 40px;
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--primary-yellow);
+            border: 1px solid var(--primary-yellow);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .catalog-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .catalog-btn:hover {
+            background: var(--primary-yellow);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .catalog-btn:hover svg {
+            transform: translateX(5px);
+        }
+
+
 
         .deals-title-box h2 {
             font-size: 1.8rem;
+            /* Slightly larger since there's no box */
             margin: 0;
-            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
-        .deals-paragraph {
-            color: var(--text-white);
-            font-size: 1.3rem;
-            max-width: 800px;
+        .deals-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 900px;
             margin: 0 auto;
-            line-height: 1.8;
-            font-weight: 500;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            padding-bottom: 40px;
+        }
+
+        .deal-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ddd;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .deal-box:hover {
+            background: var(--primary-yellow);
+            color: #000;
+            transform: translateY(-2px);
+            border-color: var(--primary-yellow);
+        }
+
+        .deal-box.highlight {
+            border-color: var(--primary-yellow);
+            color: var(--primary-yellow);
+        }
+
+        .deal-box.highlight:hover {
+            color: #000;
         }
     </style>
+
+    <!-- Catalog Section -->
+    <div style="text-align: center; margin: 40px 0;">
+        <a href="catalog.html" class="catalog-btn">
+            VIEW FULL CATALOG
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+    </div>
 
     <!-- Contact Section -->
     <div class="section-header">
@@ -556,7 +711,7 @@
     </style>
 
     <div class="section-header">
-        <h2>Social Media</h2>
+        <h2>Our Social Media</h2>
     </div>
     <div class="social-container">
         <div class="social-buttons">
@@ -835,7 +990,8 @@
 
 
     <footer>
-        <p>&copy; 2026 Imran Electric Traders. All Rights Reserved.</p>
+        <p>&copy; 2026 <strong>Imran Electric Traders</strong>. All Rights Reserved.</p>
+        <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">Premium Electric Solutions in Shahalam Market.</p>
     </footer>
 
 
@@ -876,5 +1032,112 @@
     </script>
 </body>
 
-</html>
+<!-- Electric Cursor Elements -->
+<div id="cursor-bolt">
+    <svg viewBox="0 0 24 24" fill="var(--primary-yellow)" stroke="black" stroke-width="1">
+        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke-linejoin="round" />
+    </svg>
+</div>
 
+<!-- Electric Waves Container -->
+<div id="cursor-waves"></div>
+
+<style>
+    /* Hide Default Cursor */
+    body,
+    a,
+    button,
+    input {
+        cursor: none !important;
+    }
+
+    /* Lightning Bolt Cursor */
+    #cursor-bolt {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 30px;
+        height: 30px;
+        pointer-events: none;
+        z-index: 10001;
+        /* On top of waves */
+        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+        transform: translate(-20%, -20%);
+        /* Align tip */
+    }
+
+    /* Wave Effect */
+    .wave-ring {
+        position: fixed;
+        border: 2px solid var(--primary-yellow);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        transform: translate(-50%, -50%);
+        animation: electricRipple 1s ease-out forwards;
+        opacity: 0;
+    }
+
+    @keyframes electricRipple {
+        0% {
+            width: 10px;
+            height: 10px;
+            opacity: 1;
+            border-width: 3px;
+        }
+
+        100% {
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+            border-width: 0px;
+        }
+    }
+</style>
+
+<script>
+    const cursorBolt = document.getElementById('cursor-bolt');
+    const wavesContainer = document.getElementById('cursor-waves');
+
+    // Move Bolt
+    document.addEventListener('mousemove', (e) => {
+        cursorBolt.style.left = e.clientX + 'px';
+        cursorBolt.style.top = e.clientY + 'px';
+
+        // Generate Wave on Movement (Throttled for performance)
+        if (Math.random() > 0.8) { // Only creating waves 20% of the time to avoid clutter
+            createWave(e.clientX, e.clientY);
+        }
+    });
+
+    // Click Effect (Burst of waves)
+    document.addEventListener('mousedown', (e) => {
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => CreateBurst(e.clientX, e.clientY), i * 100);
+        }
+        cursorBolt.style.transform = 'translate(-20%, -20%) scale(0.8)';
+    });
+
+    document.addEventListener('mouseup', () => {
+        cursorBolt.style.transform = 'translate(-20%, -20%) scale(1)';
+    });
+
+    function createWave(x, y) {
+        const wave = document.createElement('div');
+        wave.classList.add('wave-ring');
+        wave.style.left = x + 'px';
+        wave.style.top = y + 'px';
+        wavesContainer.appendChild(wave);
+
+        // Cleanup
+        setTimeout(() => {
+            wave.remove();
+        }, 1000);
+    }
+
+    function CreateBurst(x, y) {
+        createWave(x, y);
+    }
+</script>
+
+</html>

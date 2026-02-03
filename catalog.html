@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog - Imran Electric Traders</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --primary-yellow: #FFD700;
+            --text-white: #ffffff;
+            --sidebar-width: 280px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            /* App-like feel */
+            cursor: none;
+        }
+
+        /* Global Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 10, 10, 0.9);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .category-item {
+            position: relative;
+            cursor: pointer;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            color: white;
+            transition: color 0.3s ease;
+            text-transform: capitalize;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-weight: 500;
+        }
+
+        /* Progress Bar Animation Logic */
+        .category-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: var(--primary-yellow);
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .category-item:hover {
+            color: black;
+            padding-left: 35px;
+            /* Slight nudge */
+        }
+
+        .category-item:hover::before {
+            width: 100%;
+        }
+
+        /* Active State */
+        .category-item.active {
+            background-color: var(--primary-yellow);
+            color: black;
+            font-weight: 800;
+            border-left: 5px solid white;
+            /* Highlight active */
+        }
+
+        .category-item.active::before {
+            width: 100%;
+        }
+
+        /* Keep full for active */
+
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* --- Top Bar --- */
+        .top-bar {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(5px);
+            position: relative;
+            /* For centering */
+        }
+
+        .home-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            z-index: 10;
+            /* Ensure clickable */
+        }
+
+        .home-btn:hover {
+            color: var(--primary-yellow);
+        }
+
+        .home-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+        }
+
+        /* Icon-Triggered Centered Search Bar */
+        .search-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .search-input {
+            width: 0;
+            /* Hidden initially */
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            outline: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Active State (Open) */
+        .search-container.active {
+            padding: 5px 20px;
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            background: rgba(0, 0, 0, 0.5);
+            /* Darker when open */
+        }
+
+        .search-container.active .search-input {
+            width: 300px;
+            /* Expand */
+            opacity: 1;
+            padding-right: 10px;
+            pointer-events: all;
+        }
+
+        .search-icon-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .search-container.active .search-icon-btn {
+            color: var(--primary-yellow);
+            /* Yellow when active */
+        }
+
+        .search-icon-btn:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Content Display */
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-white);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .placeholder-msg {
+            color: #666;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        /* --- Electric Cursor (Copied from Index) --- */
+        body,
+        a,
+        button,
+        input {
+            cursor: none !important;
+        }
+
+        #cursor-bolt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 10001;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+            transform: translate(-20%, -20%);
+        }
+
+        .wave-ring {
+            position: fixed;
+            border: 2px solid var(--primary-yellow);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            animation: electricRipple 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes electricRipple {
+            0% {
+                width: 10px;
+                height: 10px;
+                opacity: 1;
+                border-width: 3px;
+            }
+
+            100% {
+                width: 100px;
+                height: 100px;
+                opacity: 0;
+                border-width: 0px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">Categories</div>
+        <ul class="category-list" id="categoryList">
+            <!-- Categories will be injected here via JS -->
+        </ul>
+    </aside>
+
+    <!-- Main Section -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <a href="index.html" class="home-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                HOME
+            </a>
+
+            <div class="search-container" id="searchContainer">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+                <button class="search-icon-btn" onclick="toggleSearch()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content-area" id="content-display">
+            <h1 class="section-title">Select a Category</h1>
+            <p class="placeholder-msg">Different Companies and Products will appear here.</p>
+        </div>
+    </main>
+
+    <!-- Cursor Elements -->
+    <div id="cursor-bolt">
+        <svg viewBox="0 0 24 24" fill="var(--primary-yellow)" stroke="black" stroke-width="1">
+            <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke-linejoin="round" />
+        </svg>
+    </div>
+    <div id="cursor-waves"></div>
+
+    <script>
+        // Search Toggle Logic
+        function toggleSearch() {
+            const container = document.getElementById('searchContainer');
+            const input = document.getElementById('searchInput');
+            container.classList.toggle('active');
+            if (container.classList.contains('active')) {
+                input.focus();
+            } else {
+                input.value = ''; // Clear on close optional
+            }
+        }
+
+        // Sample Data Structure
+        const categories = [
+            "China Fitting",
+            "Fiber Sheet",
+            "Extension Leads",
+            "Lights",
+            "Breakers",
+            "Cabels/Wiring"
+        ];
+
+        // 1. Render Sidebar Categories
+        const categoryList = document.getElementById('categoryList');
+        const contentDisplay = document.getElementById('content-display');
+
+        categories.forEach(cat => {
+            const li = document.createElement('li');
+            li.className = 'category-item';
+            li.textContent = cat;
+            li.onclick = () => selectCategory(li, cat);
+            categoryList.appendChild(li);
+        });
+
+        // 2. Select Category Logic
+        function selectCategory(element, categoryName) {
+            // Remove active from all
+            document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+            // Add active to clicked
+            element.classList.add('active');
+
+            let contentHTML = '';
+
+            if (categoryName === 'China Fitting') {
+                contentHTML = `
+                    <h1 class="section-title" style="color:var(--primary-yellow)">${categoryName}</h1>
+                    <div style="margin-top:20px;">
+                        <h2 style="margin-bottom:20px; color:#ddd;">Select Company</h2>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">
+                            <!-- Companies for China Fitting -->
+                            <div class="mock-company" onclick="alert('Product List for Company A')" style="cursor:pointer; background:rgba(255,255,255,0.05); padding:30px; border:1px solid rgba(255,255,255,0.1); text-align:center; border-radius:10px; transition:0.3s;">
+                                <h3 style="color:var(--primary-yellow)">Company A</h3>
+                            </div>
+                            <div class="mock-company" onclick="alert('Product List for Company B')" style="cursor:pointer; background:rgba(255,255,255,0.05); padding:30px; border:1px solid rgba(255,255,255,0.1); text-align:center; border-radius:10px; transition:0.3s;">
+                                <h3 style="color:var(--primary-yellow)">Company B</h3>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Direct Products (Placeholder)
+                contentHTML = `
+                    <h1 class="section-title" style="color:var(--primary-yellow)">${categoryName}</h1>
+                    <div style="margin-top:20px;">
+                        <h2 style="margin-bottom:20px; color:#ddd;">Products</h2>
+                        <p class="placeholder-msg" style="text-align:left; margin-top:0;">
+                            Products for ${categoryName} will be listed here directly.
+                        </p>
+                    </div>
+                `;
+            }
+
+            contentDisplay.innerHTML = contentHTML;
+        }
+
+        // --- Electric Cursor Logic (Shared) ---
+        const cursorBolt = document.getElementById('cursor-bolt');
+        const wavesContainer = document.getElementById('cursor-waves');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorBolt.style.left = e.clientX + 'px';
+            cursorBolt.style.top = e.clientY + 'px';
+            if (Math.random() > 0.85) createWave(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mousedown', (e) => {
+            for (let i = 0; i < 3; i++) setTimeout(() => createWave(e.clientX, e.clientY), i * 100);
+            cursorBolt.style.transform = 'translate(-20%, -20%) scale(0.8)';
+        });
+        document.addEventListener('mouseup', () => cursorBolt.style.transform = 'translate(-20%, -20%) scale(1)');
+
+        function createWave(x, y) {
+            const wave = document.createElement('div');
+            wave.classList.add('wave-ring');
+            wave.style.left = x + 'px';
+            wave.style.top = y + 'px';
+            wavesContainer.appendChild(wave);
+            setTimeout(() => wave.remove(), 1000);
+        }
+    </script>
+</body>
+
+</html>
