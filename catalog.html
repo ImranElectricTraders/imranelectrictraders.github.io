@@ -315,14 +315,100 @@
                 border-width: 0px;
             }
         }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100%;
+                width: 250px;
+                transition: 0.3s ease;
+                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+
+            .top-bar {
+                padding: 0 20px;
+                justify-content: space-between;
+            }
+
+            .menu-btn {
+                display: block !important;
+                background: none;
+                border: none;
+                color: white;
+                cursor: pointer;
+            }
+
+            .home-btn span {
+                display: none;
+                /* Hide text on small screens */
+            }
+
+            /* Hide Cursor on Touch */
+            #cursor-bolt,
+            .wave-ring,
+            #cursor-waves {
+                display: none !important;
+            }
+
+            body,
+            a,
+            button,
+            input {
+                cursor: auto !important;
+            }
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* Hidden on desktop */
+
+        /* Overlay for mobile */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">Categories</div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            Categories
+            <button onclick="toggleSidebar()"
+                style="float:right; background:none; border:none; color:#888; cursor:pointer;">✕</button>
+        </div>
         <ul class="category-list" id="categoryList">
             <!-- Categories will be injected here via JS -->
         </ul>
@@ -332,6 +418,15 @@
     <main class="main-content">
         <!-- Top Bar -->
         <div class="top-bar">
+            <!-- Mobile Menu Trigger -->
+            <button class="menu-btn" onclick="toggleSidebar()">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
             <a href="index.html" class="home-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path
@@ -367,6 +462,12 @@
     <div id="cursor-waves"></div>
 
     <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
         // Search Toggle Logic
         function toggleSearch() {
             const container = document.getElementById('searchContainer');
