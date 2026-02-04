@@ -370,15 +370,28 @@
 
             /* Fix Search Bar on Mobile */
             .search-container.active {
-                width: 60%;
+                width: 70%;
                 /* Limit width */
-                max-width: 250px;
+                max-width: 300px;
+                z-index: 20;
+                /* Ensure on top */
             }
 
             .search-container.active .search-input {
                 width: 100% !important;
                 /* Adapt to container */
                 font-size: 0.9rem;
+            }
+
+            /* Hide Home Button when Search is Open */
+            .top-bar.search-active .home-btn {
+                display: none;
+            }
+
+            /* Center search container perfectly when active on mobile */
+            .top-bar.search-active .search-container {
+                /* Since home button is gone, we might have more space */
+                /* But absolute positioning still holds. */
             }
         }
 
@@ -604,7 +617,11 @@
         function toggleSearch() {
             const container = document.getElementById('searchContainer');
             const input = document.getElementById('searchInput');
+            const topBar = document.querySelector('.top-bar'); // Select Top Bar parent
+
             container.classList.toggle('active');
+            topBar.classList.toggle('search-active'); // Toggle state class
+
             if (container.classList.contains('active')) {
                 input.focus();
             } else {
@@ -958,7 +975,6 @@
                         </div>
                         <div class="product-details">
                             <h3 class="product-title">${product.name}</h3>
-                            <p class="product-price">${product.price}</p>
                             <span style="font-size:0.8rem; color:#888;">${product.brand}</span>
                         </div>
                     </div>
@@ -1027,7 +1043,6 @@
                         </div>
                         <div class="product-details">
                             <h3 class="product-title">${product.name}</h3>
-                            <p class="product-price">${product.price}</p>
                             <span style="font-size:0.8rem; color:#888;">${product.brand} (${product.catName})</span>
                         </div>
                     </div>
