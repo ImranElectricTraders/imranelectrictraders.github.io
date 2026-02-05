@@ -373,4 +373,11 @@
         width: 100%;
         justify-content: center;
     }
+
+    /* Smaller Add to Cart Button on Mobile */
+    .add-cart-btn {
+        padding: 5px;
+        font-size: 0.75rem;
+        letter-spacing: 0;
+    }
 }

@@ -162,7 +162,8 @@
             /* Text becomes black */
             -webkit-text-stroke: 1px var(--primary-yellow);
             /* Yellow Outline */
-            text-stroke: 1px var(--primary-yellow);
+            -webkit-text-stroke: 1px var(--primary-yellow);
+            /* Standard property if supported in future, but webkit covers most */
             text-shadow: none;
             transform: scale(1.1);
             /* Slight pop */
@@ -547,8 +548,9 @@
             stroke-width: 3;
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
+            stroke-dasharray: 400;
+            /* Adjusted to closer match path length */
+            stroke-dashoffset: 400;
             animation: drawBulb 2s ease forwards;
         }
 
