@@ -95,8 +95,8 @@
 
         /* Logo Animation */
         .logo-container {
-            width: 250px;
-            height: 250px;
+            width: 150px;
+            height: 150px;
             /* border-radius: 15px; REMOVED */
             /* border: 2px solid var(--primary-yellow); REMOVED */
             padding: 2px;
@@ -422,8 +422,8 @@
             }
 
             .logo-container {
-                width: 180px;
-                height: 180px;
+                width: 120px;
+                height: 120px;
             }
 
             .brand-name {
@@ -639,11 +639,135 @@
         </div>
 
         <p class="welcome-text">Welcome to</p>
-        <h1 class="brand-name">
-            <span class="word-span">Imran</span>
-            <span class="word-span">Electric</span>
-            <span class="word-span">Traders</span>
-        </h1>
+        <style>
+            /* ERA Image Drawing Animation */
+            .era-container {
+                position: relative;
+                width: 450px;
+                height: 220px;
+                /* Adjust based on PNG aspect ratio */
+                margin: 0 auto 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .era-img {
+                width: 100%;
+                height: auto;
+                max-height: 100%;
+                object-fit: contain;
+                opacity: 0;
+                /* Filter to simulate sketch initially */
+                filter: grayscale(100%) contrast(1.2) brightness(1.1) drop-shadow(0 0 0 transparent);
+
+                /* The Reveal Animation */
+                animation:
+                    sketchReveal 2s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards,
+                    colorFill 1s 2s ease-out forwards,
+                    floatEra 4s 3s ease-in-out infinite;
+
+                /* Mask to simulate drawing direction (Left to Right) */
+                mask-image: linear-gradient(to right, black 50%, transparent 50%);
+                mask-size: 200% 100%;
+                mask-position: 100% 0;
+                -webkit-mask-image: linear-gradient(to right, black 50%, transparent 50%);
+                -webkit-mask-size: 200% 100%;
+                -webkit-mask-position: 100% 0;
+            }
+
+            @keyframes sketchReveal {
+                0% {
+                    -webkit-mask-position: 100% 0;
+                    mask-position: 100% 0;
+                    transform: scale(0.9) skewX(-10deg);
+                    opacity: 0.5;
+                }
+
+                100% {
+                    -webkit-mask-position: 0% 0;
+                    mask-position: 0% 0;
+                    transform: scale(1) skewX(0deg);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes colorFill {
+                to {
+                    filter: grayscale(0%) contrast(1) brightness(1) drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+                }
+            }
+
+            @keyframes floatEra {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+
+            /* SVG Squiggle for "Stroke" feel overlay */
+            .scribble-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            .scribble-path {
+                fill: none;
+                stroke: var(--primary-yellow);
+                stroke-width: 2;
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+                animation: scribbleDraw 2s ease-in-out forwards;
+                opacity: 0.8;
+            }
+
+            @keyframes scribbleDraw {
+                0% {
+                    stroke-dashoffset: 1000;
+                    opacity: 1;
+                }
+
+                80% {
+                    stroke-dashoffset: 0;
+                    opacity: 1;
+                }
+
+                100% {
+                    stroke-dashoffset: 0;
+                    opacity: 0;
+                }
+
+                /* Fade out after drawing */
+            }
+
+            @media (max-width: 768px) {
+                .era-container {
+                    width: 300px;
+                    height: 160px;
+                }
+            }
+        </style>
+
+        <h1 class="brand-name" style="display:none;">Imran Electric Traders</h1> <!-- Hidden for SEO -->
+
+        <div class="era-container">
+            <!-- SVG Scribble to mimic "drawing" the image -->
+            <svg class="scribble-overlay" viewBox="0 0 300 150" preserveAspectRatio="none">
+                <path class="scribble-path"
+                    d="M10,75 Q50,10 90,75 T170,75 T250,75 T290,75 M20,100 Q100,50 180,100 T280,100" />
+            </svg>
+            <img src="image/era.png" alt="Era Logo" class="era-img">
+        </div>
 
         <!-- Yellow Box for Title Only -->
         <div class="deals-title-box">
