@@ -302,6 +302,45 @@
             opacity: 0;
         }
 
+        .qty-stepper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .step-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .step-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .qty-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: white;
+            font-family: inherit;
+            /* Hide arrows */
+            -moz-appearance: textfield;
+        }
+
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         @keyframes electricRipple {
             0% {
                 width: 10px;
@@ -930,6 +969,22 @@
                     images: [defaultImg],
                     desc: "Manual generator changeover.",
                     features: ["Pure Copper", "Ceramic Base", "Knife Switch", "Reliable"]
+                },
+                {
+                    name: "KE Single Pole Breaker",
+                    brand: "KE",
+                    price: "Contact for Rate",
+                    images: ["image/Products/KE Breakers/KE Single Pole Breaker 1.jpg"],
+                    desc: "Original KE Single Pole Circuit Breaker.",
+                    features: ["Original KE Product", "Single Pole", "Safety Guaranteed", "High Quality"]
+                },
+                {
+                    name: "KE Double Pole Breaker",
+                    brand: "KE",
+                    price: "Contact for Rate",
+                    images: ["image/Products/KE Breakers/KE Dubl Pole Breaker 1.jpg"],
+                    desc: "Original KE Double Pole Circuit Breaker.",
+                    features: ["Original KE Product", "Double Pole", "Heavy Duty", "Main Switch Use"]
                 }
             ],
             "Cabels/Wiring": [
@@ -1042,13 +1097,18 @@
                         </div>
                         <div class="product-details">
                             <h3 class="product-title">${product.name}</h3>
+                            <div style="color:var(--primary-yellow); font-weight:bold; margin-bottom:5px;">${product.price}</div>
                             <span style="font-size:0.8rem; color:#888;">${product.brand}</span>
                         </div>
                         <!-- Actions -->
                         <div class="card-actions" onclick="event.stopPropagation()">
                             <div class="qty-row">
                                 <span style="font-size:0.8rem; color:#aaa;">Qty:</span>
-                                <input type="number" min="1" value="1" class="qty-input" id="qty-${categoryName.replace(/\s/g, '-')}-${index}">
+                                <div class="qty-stepper">
+                                    <button class="step-btn" onclick="updateQty('qty-${categoryName.replace(/\s/g, '-')}-${index}', -1)">-</button>
+                                    <input type="number" min="1" value="1" class="qty-input" id="qty-${categoryName.replace(/\s/g, '-')}-${index}">
+                                    <button class="step-btn" onclick="updateQty('qty-${categoryName.replace(/\s/g, '-')}-${index}', 1)">+</button>
+                                </div>
                             </div>
                             <button class="add-cart-btn" onclick="addToCartCatalogAdapter('${categoryName}', ${index})">Add to Cart</button>
                         </div>
@@ -1118,13 +1178,18 @@
                         </div>
                         <div class="product-details">
                             <h3 class="product-title">${product.name}</h3>
+                            <div style="color:var(--primary-yellow); font-weight:bold; margin-bottom:5px;">${product.price}</div>
                             <span style="font-size:0.8rem; color:#888;">${product.brand} (${product.catName})</span>
                         </div>
                          <!-- Actions -->
                          <div class="card-actions" onclick="event.stopPropagation()">
                             <div class="qty-row">
                                 <span style="font-size:0.8rem; color:#aaa;">Qty:</span>
-                                <input type="number" min="1" value="1" class="qty-input" id="qty-${product.catName.replace(/\s/g, '-')}-${product.originalIndex}">
+                                <div class="qty-stepper">
+                                    <button class="step-btn" onclick="updateQty('qty-${product.catName.replace(/\s/g, '-')}-${product.originalIndex}', -1)">-</button>
+                                    <input type="number" min="1" value="1" class="qty-input" id="qty-${product.catName.replace(/\s/g, '-')}-${product.originalIndex}">
+                                    <button class="step-btn" onclick="updateQty('qty-${product.catName.replace(/\s/g, '-')}-${product.originalIndex}', 1)">+</button>
+                                </div>
                             </div>
                             <button class="add-cart-btn" onclick="addToCartCatalogAdapter('${product.catName}', ${product.originalIndex})">Add to Cart</button>
                         </div>
@@ -1148,6 +1213,16 @@
             searchInput.addEventListener('input', (e) => filterProducts(e.target.value));
         }
 
+        // Helper to update quantity
+        function updateQty(inputId, change) {
+            const input = document.getElementById(inputId);
+            let val = parseInt(input.value) || 1;
+            val += change;
+            if (val < 1) val = 1;
+            input.value = val;
+            event.stopPropagation(); // Prevent card click
+        }
+
         // --- Cart Adapter ---
         // Adapts local page interactions to the shared global addToCart function
         function addToCartCatalogAdapter(catName, index) {
@@ -1169,12 +1244,13 @@
                 brand: product.brand,
                 category: catName,
                 qty: qty,
+                price: product.price, // Added price
                 desc: product.desc // Optional
             };
 
             // Calculate start coordinates for animation
             // We need the button element to start animation from
-            const btn = qtyInput.parentElement.nextElementSibling;
+            const btn = qtyInput.parentElement.parentElement.nextElementSibling; // Adjusted logic for new DOM struct
 
             // Call Global Function with animation source
             window.addToCart(cartItem, btn);

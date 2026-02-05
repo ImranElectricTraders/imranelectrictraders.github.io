@@ -254,8 +254,10 @@
         <div class="product-info">
             <span class="brand-badge" id="detail-brand">Loading...</span>
             <h1 id="detail-title">Loading...</h1>
-            <!-- Price Removed -->
-            <!-- <div class="product-price" id="detail-price">---</div> -->
+            <!-- Price Restored -->
+            <div class="product-price" id="detail-price"
+                style="font-size: 1.5rem; margin-bottom: 20px; color: var(--primary-yellow); font-weight: bold;">
+                Loading...</div>
 
             <p class="product-description" id="detail-desc">
                 Loading description...
@@ -509,6 +511,22 @@
                     images: [defaultImg],
                     desc: "Manual generator changeover.",
                     features: ["Pure Copper", "Ceramic Base", "Knife Switch", "Reliable"]
+                },
+                {
+                    name: "KE Single Pole Breaker",
+                    brand: "KE",
+                    price: "Contact for Rate",
+                    images: ["image/Products/KE Breakers/KE Single Pole Breaker 1.jpg"],
+                    desc: "Original KE Single Pole Circuit Breaker.",
+                    features: ["Original KE Product", "Single Pole", "Safety Guaranteed", "High Quality"]
+                },
+                {
+                    name: "KE Double Pole Breaker",
+                    brand: "KE",
+                    price: "Contact for Rate",
+                    images: ["image/Products/KE Breakers/KE Dubl Pole Breaker 1.jpg"],
+                    desc: "Original KE Double Pole Circuit Breaker.",
+                    features: ["Original KE Product", "Double Pole", "Heavy Duty", "Main Switch Use"]
                 }
             ],
             "Cabels/Wiring": [
@@ -604,7 +622,7 @@
             // Populate
             document.getElementById('detail-brand').textContent = product.brand;
             document.getElementById('detail-title').textContent = product.name;
-            // document.getElementById('detail-price').textContent = product.price; // Removed
+            document.getElementById('detail-price').textContent = product.price; // Restored
             document.getElementById('detail-desc').textContent = product.desc;
 
             // Features
@@ -662,6 +680,7 @@
                 brand: product.brand,
                 category: catName,
                 qty: qty,
+                price: product.price,
                 desc: product.desc
             };
 
