@@ -1,0 +1,376 @@
+/* --- Cart Global Styles --- */
+
+/* Cart Trigger Button (Floating or Header) */
+.cart-btn-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-btn-icon {
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.cart-btn-container:hover .cart-btn-icon {
+    color: var(--primary-yellow);
+    transform: scale(1.1);
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--primary-yellow);
+    color: black;
+    font-size: 0.75rem;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+/* Add to Cart Actions (Cards/Details) */
+.card-actions {
+    padding: 0 15px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.qty-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.qty-input {
+    width: 50px;
+    background: transparent;
+    border: none;
+    color: white;
+    text-align: center;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Hide spin buttons */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Flying Ball Animation */
+.fly-item {
+    position: fixed;
+    width: 60px;
+    /* Increased from 20px */
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #e0e0e0);
+    /* 3D effect */
+    border-radius: 50%;
+    z-index: 10005;
+    pointer-events: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--primary-yellow);
+    /* Added border */
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.8s ease;
+}
+
+/* Button Pulse Loop */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+.add-cart-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary-yellow);
+    color: black;
+    border: none;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    animation: pulseGlow 2s infinite;
+}
+
+.add-cart-btn:active {
+    animation: none;
+    transform: scale(0.95);
+}
+
+.add-cart-btn:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+    animation: none;
+    /* Pause pulse on hover */
+}
+
+/* Cart Modal Overlay */
+.cart-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.cart-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Cart Content Box */
+.cart-content {
+    background: #0f0f0f;
+    width: 95%;
+    max-width: 900px;
+    max-height: 85vh;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header */
+.cart-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(20, 20, 20, 0.95);
+}
+
+.cart-header h2 {
+    color: var(--primary-yellow);
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.close-cart-btn {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: 0.3s;
+}
+
+.close-cart-btn:hover {
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* Body */
+.cart-body {
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Table Styles */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #ddd;
+    font-size: 1rem;
+}
+
+.cart-table th {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--primary-yellow);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 20px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.cart-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.cart-item-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Qty Controls inside Cart */
+.cart-qty-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.qty-btn-mini {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.qty-btn-mini:hover {
+    background: var(--primary-yellow);
+    color: black;
+}
+
+/* Footer */
+.cart-footer {
+    padding: 20px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 10, 0.95);
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.total-label {
+    color: #aaa;
+    font-size: 1.1rem;
+}
+
+.total-value {
+    color: var(--primary-yellow);
+    font-weight: 900;
+    font-size: 1.4rem;
+    margin-left: 10px;
+}
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    /* Pill shape */
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn:hover {
+    background: #128C7E;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+.remove-btn {
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+    background: #ff4444;
+    color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .cart-content {
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        border: none;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Hide non-essential columns on mobile */
+    .th-brand,
+    .td-brand,
+    .th-cat,
+    .td-cat {
+        display: none;
+    }
+
+    .cart-footer {
+        flex-direction: column;
+        text-align: center;
+        padding-bottom: 40px;
+        /* Safe area */
+    }
+
+    .whatsapp-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
