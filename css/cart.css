@@ -346,11 +346,18 @@
         max-height: 100vh;
         border-radius: 0;
         border: none;
+        display: flex;
+        flex-direction: column;
     }
 
+    .cart-body {
+        padding-bottom: 20px; /* Space for scrolling */
+    }
+
+    /* Table Adjustments */
     .cart-table th,
     .cart-table td {
-        padding: 10px;
+        padding: 10px 8px; /* Slightly reduced padding */
         font-size: 0.9rem;
     }
 
@@ -362,22 +369,93 @@
         display: none;
     }
 
+    /* Product Name Column */
+    .cart-table td:nth-child(2) {
+        max-width: 120px;
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    .cart-table td:nth-child(2) div:first-child {
+        font-size: 0.95rem; 
+        margin-bottom: 3px;
+    }
+
+    /* Larger Qty Controls for Mobile */
+    .cart-qty-control {
+        gap: 5px;
+        padding: 2px;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .qty-btn-mini {
+        width: 32px; /* Larger touch target */
+        height: 32px;
+        font-size: 1.2rem;
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .qty-btn-mini:active {
+        background: var(--primary-yellow);
+        color: black;
+    }
+
+    .cart-qty-control span {
+        font-size: 1rem;
+        min-width: 25px;
+    }
+
+    /* Cart Footer - Stacked */
     .cart-footer {
         flex-direction: column;
         text-align: center;
-        padding-bottom: 40px;
-        /* Safe area */
+        padding: 20px 15px 40px; /* Extra bottom padding */
+        gap: 15px;
+        background: #111;
+        border-top: 1px solid rgba(255,255,255,0.15);
     }
 
     .whatsapp-btn {
         width: 100%;
         justify-content: center;
+        padding: 15px;
+        font-size: 1.1rem;
     }
 
-    /* Smaller Add to Cart Button on Mobile */
+    /* Catalog Page - Mobile Quantity Stepper */
+    .product-card .qty-stepper {
+        height: 40px; /* Taller */
+    }
+
+    .product-card .step-btn {
+        width: 40px; /* Wider */
+        font-size: 1.5rem; /* Bigger symbols */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-card .qty-input {
+        width: 45px;
+        font-size: 1.1rem;
+    }
+
+    /* Smaller Add to Cart Button on Mobile to fit next to stepper */
     .add-cart-btn {
-        padding: 5px;
-        font-size: 0.75rem;
+        padding: 10px 5px;
+        font-size: 0.85rem;
         letter-spacing: 0;
+        white-space: nowrap;
+    }
+    
+    .card-actions {
+         gap: 10px;
+    }
+
+    /* Ensure actions row fits */
+    .card-actions .qty-row {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 5px;
     }
 }
