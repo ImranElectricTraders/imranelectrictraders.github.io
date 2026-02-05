@@ -388,11 +388,7 @@
                 display: none;
             }
 
-            /* Center search container perfectly when active on mobile */
-            .top-bar.search-active .search-container {
-                /* Since home button is gone, we might have more space */
-                /* But absolute positioning still holds. */
-            }
+
         }
 
         .menu-btn {
@@ -537,6 +533,204 @@
                 margin-bottom: 20px;
             }
         }
+
+        /* --- Cart & Quantity Styles --- */
+        .cart-btn-container {
+            position: relative;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .cart-btn-icon {
+            color: white;
+            transition: var(--transition);
+        }
+
+        .cart-btn-container:hover .cart-btn-icon {
+            color: var(--primary-yellow);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary-yellow);
+            color: black;
+            font-size: 0.75rem;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Card Actions */
+        .card-actions {
+            padding: 0 15px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .qty-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .qty-input {
+            width: 50px;
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
+        }
+
+        /* Hide arrows */
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .add-cart-btn {
+            width: 100%;
+            padding: 8px;
+            background: var(--primary-yellow);
+            color: black;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .add-cart-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .cart-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .cart-content {
+            background: #111;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            color: var(--primary-yellow);
+            text-transform: uppercase;
+        }
+
+        .cart-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #ddd;
+        }
+
+        .cart-table th,
+        .cart-table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-table th {
+            color: var(--primary-yellow);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .remove-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0a0a0a;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 
@@ -578,6 +772,18 @@
                 HOME
             </a>
 
+            <!-- Cart Trigger -->
+            <div class="cart-btn-container" onclick="openCart()">
+                <div class="cart-btn-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                </div>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+
             <div class="search-container" id="searchContainer">
                 <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
                 <button class="search-icon-btn" onclick="toggleSearch()">
@@ -595,6 +801,48 @@
             <p class="placeholder-msg">Different Companies and Products will appear here.</p>
         </div>
     </main>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>Your Order List</h2>
+                <button onclick="toggleCart()"
+                    style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">✕</button>
+            </div>
+            <div class="cart-body">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th>Brand</th>
+                            <th>Category</th>
+                            <th>Qty</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartTableBody">
+                        <!-- Items injected here -->
+                    </tbody>
+                </table>
+                <div id="emptyCartMsg" style="text-align:center; padding:20px; color:#666; display:none;">
+                    Your cart is empty.
+                </div>
+            </div>
+            <div class="cart-footer">
+                <div style="color:white; font-size:1.1rem;">Total Items: <span id="totalItems"
+                        style="color:var(--primary-yellow); font-weight:bold;">0</span></div>
+                <button class="whatsapp-btn" onclick="sendToWhatsapp()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    Send List on Whatsapp
+                </button>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -641,10 +889,15 @@
         ];
 
         // Sample Products Data (Rich Data)
-
-
-        // Sample Products Data (Rich Data)
         const defaultImg = "image/logo.png"; // Placeholder
+
+        // Cart State with LocalStorage
+        let cart = JSON.parse(localStorage.getItem('ie_cart')) || [];
+
+        // Initialize UI on load
+        window.addEventListener('load', () => {
+            updateCartUI();
+        });
 
         const sampleProducts = {
             "China Fitting": [
@@ -977,6 +1230,14 @@
                             <h3 class="product-title">${product.name}</h3>
                             <span style="font-size:0.8rem; color:#888;">${product.brand}</span>
                         </div>
+                        <!-- Actions -->
+                        <div class="card-actions" onclick="event.stopPropagation()">
+                            <div class="qty-row">
+                                <span style="font-size:0.8rem; color:#aaa;">Qty:</span>
+                                <input type="number" min="1" value="1" class="qty-input" id="qty-${categoryName.replace(/\s/g, '-')}-${index}">
+                            </div>
+                            <button class="add-cart-btn" onclick="addToCart('${categoryName}', ${index})">Add to Cart</button>
+                        </div>
                     </div>
                 `).join('');
             } else {
@@ -1045,6 +1306,14 @@
                             <h3 class="product-title">${product.name}</h3>
                             <span style="font-size:0.8rem; color:#888;">${product.brand} (${product.catName})</span>
                         </div>
+                         <!-- Actions -->
+                         <div class="card-actions" onclick="event.stopPropagation()">
+                            <div class="qty-row">
+                                <span style="font-size:0.8rem; color:#aaa;">Qty:</span>
+                                <input type="number" min="1" value="1" class="qty-input" id="qty-${product.catName.replace(/\s/g, '-')}-${product.originalIndex}">
+                            </div>
+                            <button class="add-cart-btn" onclick="addToCart('${product.catName}', ${product.originalIndex})">Add to Cart</button>
+                        </div>
                     </div>
                 `).join('');
             } else {
@@ -1058,6 +1327,135 @@
                 </div>
             `;
         });
+
+        // --- Cart Logic ---
+        function addToCart(catName, index) {
+            // Get Quantity
+            const qtyInputId = `qty-${catName.replace(/\s/g, '-')}-${index}`;
+            const qtyInput = document.getElementById(qtyInputId);
+            const qty = parseInt(qtyInput.value) || 1;
+
+            if (qty < 1) return;
+
+            // Find Product
+            const product = sampleProducts[catName][index];
+
+            // Check if already in cart
+            const existingItem = cart.find(item => item.name === product.name && item.category === catName);
+
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                cart.push({
+                    name: product.name,
+                    brand: product.brand,
+                    category: catName,
+                    qty: qty
+                });
+            }
+
+            // Save & Update
+            saveCart();
+            updateCartUI();
+
+            // Visual feedback on button (Optional)
+            const btn = qtyInput.parentElement.nextElementSibling;
+            const originalText = btn.innerText;
+            btn.innerText = "Added!";
+            btn.style.background = "#fff";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "var(--primary-yellow)";
+            }, 1000);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.length;
+        }
+
+        function saveCart() {
+            localStorage.setItem('ie_cart', JSON.stringify(cart));
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('active');
+            if (modal.classList.contains('active')) {
+                renderCartTable();
+            }
+        }
+
+        // Expose openCart globally for the header button
+        window.openCart = toggleCart;
+
+        function renderCartTable() {
+            const tbody = document.getElementById('cartTableBody');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+            const totalItemsEl = document.getElementById('totalItems');
+
+            tbody.innerHTML = '';
+
+            if (cart.length === 0) {
+                emptyMsg.style.display = 'block';
+                totalItemsEl.innerText = 0;
+                return;
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+
+            let totalQty = 0;
+
+            cart.forEach((item, index) => {
+                totalQty += item.qty;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.brand}</td>
+                    <td>${item.category}</td>
+                    <td>${item.qty}</td>
+                    <td>
+                        <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            totalItemsEl.innerText = totalQty;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
+            renderCartTable();
+        }
+
+        function sendToWhatsapp() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            let message = "*ORDER LIST - IMRAN ELECTRIC TRADERS*\n\n";
+            message += "---------------------------------\n";
+
+            cart.forEach((item, index) => {
+                message += `${index + 1}. *${item.name}*\n`;
+                message += `   Brand: ${item.brand}\n`;
+                message += `   Type: ${item.category}\n`;
+                message += `   Qty: ${item.qty}\n\n`;
+            });
+
+            message += "---------------------------------\n";
+            message += `*Total Items: ${cart.reduce((acc, item) => acc + item.qty, 0)}*\n`;
+            message += "\nPlease confirm this order availability and rates.";
+
+            const encodedMessage = encodeURIComponent(message);
+            const phoneNumber = "923134556240";
+
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+        }
 
         // --- Electric Cursor Logic (Shared) ---
         const cursorBolt = document.getElementById('cursor-bolt');
