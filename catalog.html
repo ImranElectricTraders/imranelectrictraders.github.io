@@ -387,7 +387,6 @@
             }
 
             /* SHOW Mobile Search Row */
-            /* SHOW Mobile Search Row */
             .mobile-search-row {
                 display: flex;
                 /* Ensure FLEX display on mobile */
@@ -400,65 +399,58 @@
                 position: relative;
                 height: 50px;
                 margin-top: 0;
-                /* Clear margin */
                 width: 100%;
-                /* Full width container */
             }
 
-            position: relative;
-            height: 50px;
-            /* Fixed height for animation stability */
-        }
+            .mobile-search-toggle {
+                background: none;
+                border: none;
+                color: var(--primary-yellow);
+                cursor: pointer;
+                padding: 5px;
+                z-index: 10;
+            }
 
-        .mobile-search-toggle {
-            background: none;
-            border: none;
-            color: var(--primary-yellow);
-            cursor: pointer;
-            padding: 5px;
-            z-index: 10;
-        }
+            .mobile-search-wrapper {
+                position: absolute;
+                right: 50px;
+                /* Left of toggle button */
+                width: 0;
+                /* Starte collapsed */
+                overflow: hidden;
+                transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                background: transparent;
+            }
 
-        .mobile-search-wrapper {
-            position: absolute;
-            right: 50px;
-            /* Left of toggle button */
-            width: 0;
-            /* Starte collapsed */
-            overflow: hidden;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: transparent;
-        }
+            .mobile-search-wrapper.active {
+                width: calc(100% - 70px);
+                /* Expand */
+            }
 
-        .mobile-search-wrapper.active {
-            width: calc(100% - 70px);
-            /* Expand */
-        }
+            .mobile-search-wrapper .search-input {
+                width: 100%;
+                background: rgba(40, 40, 40, 0.9);
+                border: 1px solid var(--primary-yellow);
+                color: white;
+                padding: 8px 15px;
+                border-radius: 20px;
+                outline: none;
+                opacity: 0;
+                transform: translateX(20px);
+                transition: all 0.3s ease;
+                display: block;
+                /* Ensure input is block */
+            }
 
-        .mobile-search-wrapper .search-input {
-            width: 100%;
-            background: rgba(40, 40, 40, 0.9);
-            border: 1px solid var(--primary-yellow);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            outline: none;
-            opacity: 0;
-            transform: translateX(20px);
-            transition: all 0.3s ease;
-            display: block;
-            /* Ensure input is block */
-        }
+            .mobile-search-wrapper.active .search-input {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
-        .mobile-search-wrapper.active .search-input {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Hide home button text, keep icon */
-        .home-btn span {
-            display: none;
-        }
+            /* Hide home button text, keep icon */
+            .home-btn span {
+                display: none;
+            }
 
 
         }
@@ -661,38 +653,6 @@
                 <span class="cart-count" id="cartCount">0</span>
             </div>
 
-        </div>
-        </div>
-
-        <!-- Mobile Dedicated Search Row (Below Header) -->
-        <div class="mobile-search-row">
-            <!-- 1. Search Toggle Button -->
-            <button class="mobile-search-toggle" onclick="toggleMobileSearchInput()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </button>
-
-            <!-- 2. Animated Input Container -->
-            <div class="mobile-search-wrapper" id="mobileSearchWrapper">
-                <input type="text" class="search-input" id="mobileSearchInput" placeholder="Search..."
-                    oninput="filterProducts(this.value)">
-            </div>
-        </div>
-
-        <!-- Mobile Dedicated Search Row (Below Header) -->
-        <div class="mobile-search-row">
-            <div class="search-container mobile-only-search">
-                <input type="text" class="search-input" id="mobileSearchInput" placeholder="Search products..."
-                    oninput="filterProducts(this.value)">
-                <div class="search-icon-static">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </div>
-            </div>
         </div>
 
         <!-- Content -->
@@ -1118,9 +1078,9 @@
             window.open(`product-detail.html?category=${encodeURIComponent(catName)}&index=${productIndex}`, '_blank');
         }
 
-        // --- Search Logic ---
-        document.getElementById('searchInput').addEventListener('input', function (e) {
-            const term = e.target.value.toLowerCase().trim();
+        // --- Search Logic (Refactored to Named Function) ---
+        function filterProducts(term) {
+            term = term.toLowerCase().trim();
 
             // Clear current category selection
             document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
@@ -1179,7 +1139,13 @@
                     ${productsHTML}
                 </div>
             `;
-        });
+        }
+
+        // Attach to Desktop Search Input
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => filterProducts(e.target.value));
+        }
 
         // --- Cart Adapter ---
         // Adapts local page interactions to the shared global addToCart function
@@ -1261,6 +1227,18 @@
                 mobileInput.addEventListener('input', (e) => filterProducts(e.target.value));
             }
         });
+
+        // Toggle Mobile Search
+        function toggleMobileSearchInput() {
+            const wrapper = document.getElementById('mobileSearchWrapper');
+            const input = document.getElementById('mobileSearchInput');
+            if (wrapper) {
+                wrapper.classList.toggle('active');
+                if (wrapper.classList.contains('active') && input) {
+                    input.focus();
+                }
+            }
+        }
     </script>
 </body>
 
